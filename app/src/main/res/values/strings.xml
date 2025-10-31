@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">MiApp</string>
-
-    <!-- Textos para la pantalla de login -->
-    <string name="descripcion_logo">Logo de la aplicación</string>
-    <string name="hint_usuario">Usuario</string>
-    <string name="hint_contrasena">Contraseña</string>
-    <string name="texto_boton_login">Iniciar Sesión</string>
+    <string name="app_name">EmergenciApp</string>
+    <string name="usuario_hint">Ingrese su usuario</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="olvide_contrasena">Olvidé mi contraseña</string>
+    <string name="entrar">Entrar</string>
 </resources>
