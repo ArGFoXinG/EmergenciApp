@@ -1,7 +1,3 @@
 <resources>
     <string name="app_name">EmergenciApp</string>
-    <string name="usuario_hint">Ingrese su usuario</string>
-    <string name="password_hint">Contraseña</string>
-    <string name="olvide_contrasena">Olvidé mi contraseña</string>
-    <string name="entrar">Entrar</string>
 </resources>
