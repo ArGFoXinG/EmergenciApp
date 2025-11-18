@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profesional_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Imagen de Perfil -->
+        <ImageView
+            android:id="@+id/iv_perfil"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_plomero"
+            android:contentDescription="Foto de perfil"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Nombre del Profesional -->
+        <TextView
+            android:id="@+id/tv_nombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Juan Perez"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@id/iv_perfil"
+            app:layout_constraintStart_toEndOf="@id/iv_perfil"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Oficio -->
+        <TextView
+            android:id="@+id/tv_oficio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Carpintero"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_nombre"
+            app:layout_constraintStart_toEndOf="@id/iv_perfil"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Calificación y Opiniones -->
+        <LinearLayout
+            android:id="@+id/rating_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_perfil"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_calificacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.9"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFA000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" ⭐ "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_opiniones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(35 opiniones)"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+
+        </LinearLayout>
+
+        <!-- Distancia y Tiempo -->
+        <LinearLayout
+            android:id="@+id/location_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/rating_layout"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_distancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.5 km"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" • "
+                android:textColor="#666666" />
+
+            <TextView
+                android:id="@+id/tv_tiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 min"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+
+        </LinearLayout>
+
+        <!-- Botón Ver Perfil -->
+        <Button
+            android:id="@+id/btn_ver_perfil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ver Perfil"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/location_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

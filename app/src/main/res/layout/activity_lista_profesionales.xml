@@ -1,0 +1,146 @@
+// Archivo: presentation/ui/ListaProfesionalesActivity.java
+    package com.example.emergenciapp.presentation.ui;
+
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.MenuItem;
+    import android.widget.Toast;
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.lifecycle.ViewModelProvider;
+    import androidx.recyclerview.widget.LinearLayoutManager;
+
+    import com.example.emergenciapp.data.model.Profesional;
+    import com.example.emergenciapp.databinding.ActivityListaProfesionalesBinding;
+    import com.example.emergenciapp.presentation.adapter.ProfesionalAdapter;
+    import com.example.emergenciapp.presentation.viewmodel.ProfesionalesViewModel;
+
+    public class ListaProfesionalesActivity extends AppCompatActivity
+    implements ProfesionalAdapter.OnProfesionalClickListener {
+
+    private ActivityListaProfesionalesBinding binding;
+    private ProfesionalesViewModel viewModel;
+    private ProfesionalAdapter adapter;
+
+    private String oficioSeleccionado;
+    private double latitud;
+    private double longitud;
+
+    // Variables adicionales para pasar a ResumenPagoActivity
+    private String descripcionTrabajo;
+    private String ubicacion;
+    private String fechaHora;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Inicializar View Binding
+    binding = ActivityListaProfesionalesBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
+
+    // Inicializar ViewModel
+    viewModel = new ViewModelProvider(this).get(ProfesionalesViewModel.class);
+
+    // Obtener datos del Intent (de la Activity anterior)
+    if (getIntent().getExtras() != null) {
+    oficioSeleccionado = getIntent().getStringExtra("OFICIO_SELECCIONADO");
+    latitud = getIntent().getDoubleExtra("LAT", -34.6037);
+    longitud = getIntent().getDoubleExtra("LNG", -58.3816);
+
+    // Obtener datos adicionales del servicio si están disponibles
+    descripcionTrabajo = getIntent().getStringExtra("DESCRIPCION_TRABAJO");
+    ubicacion = getIntent().getStringExtra("UBICACION");
+    fechaHora = getIntent().getStringExtra("FECHA_HORA");
+    }
+
+    // Valores por defecto si no se recibieron
+    if (descripcionTrabajo == null || descripcionTrabajo.isEmpty()) {
+    descripcionTrabajo = "Servicio de " + (oficioSeleccionado != null ? oficioSeleccionado : "mantenimiento");
+    }
+    if (ubicacion == null || ubicacion.isEmpty()) {
+    ubicacion = "Ubicación confirmada en el mapa";
+    }
+    if (fechaHora == null || fechaHora.isEmpty()) {
+    fechaHora = "Por coordinar con el profesional";
+    }
+
+    // Configurar Toolbar
+    setSupportActionBar(binding.toolbarProfesionales);
+    if (getSupportActionBar() != null) {
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    String titulo = (oficioSeleccionado != null ? oficioSeleccionado : "Profesionales") + "s Disponibles";
+    getSupportActionBar().setTitle(titulo);
+    }
+
+    // Configurar RecyclerView y Adapter
+    adapter = new ProfesionalAdapter(this);
+    binding.rvProfesionales.setLayoutManager(new LinearLayoutManager(this));
+    binding.rvProfesionales.setAdapter(adapter);
+
+    // Observar los cambios en la lista de profesionales
+    viewModel.profesionales.observe(this, profesionales -> {
+    adapter.setProfesionales(profesionales);
+    });
+
+    // Cargar profesionales inicialmente
+    viewModel.cargarProfesionales(oficioSeleccionado, latitud, longitud);
+
+    // Configurar botones de filtro
+    binding.btnMejorCalificado.setOnClickListener(v -> {
+    viewModel.filtrarPorCalificacion();
+    Toast.makeText(this, "Ordenado por calificación", Toast.LENGTH_SHORT).show();
+    });
+
+    binding.btnMasCercano.setOnClickListener(v -> {
+    viewModel.filtrarPorDistancia();
+    Toast.makeText(this, "Ordenado por distancia", Toast.LENGTH_SHORT).show();
+    });
+
+    binding.btnPrecio.setOnClickListener(v -> {
+    viewModel.filtrarPorPrecio();
+    Toast.makeText(this, "Ordenado por precio", Toast.LENGTH_SHORT).show();
+    });
+    }
+
+    // Implementación de la interfaz del Adapter
+    // PASO 15.6: Modificación para navegar a ResumenPagoActivity
+    @Override
+    public void onVerPerfilClick(Profesional profesional) {
+    // Navegar a ResumenPagoActivity pasando todos los datos necesarios
+    Intent intent = new Intent(this, ResumenPagoActivity.class);
+
+    // Datos del oficio y ubicación
+    intent.putExtra("OFICIO_SELECCIONADO", oficioSeleccionado);
+    intent.putExtra("LAT", latitud);
+    intent.putExtra("LNG", longitud);
+
+    // Datos del profesional seleccionado
+    intent.putExtra("PROFESIONAL_ID", profesional.getId());
+    intent.putExtra("PROFESIONAL_NOMBRE", profesional.getNombre());
+    intent.putExtra("PROFESIONAL_CALIFICACION", profesional.getCalificacionPromedio());
+    intent.putExtra("PROFESIONAL_OPINIONES", profesional.getCantidadOpiniones());
+
+    // Datos del servicio solicitado
+    intent.putExtra("DESCRIPCION_TRABAJO", descripcionTrabajo);
+    intent.putExtra("UBICACION", ubicacion);
+    intent.putExtra("FECHA_HORA", fechaHora);
+
+    // Generar ID de solicitud único
+    String solicitudId = "SOL_" + System.currentTimeMillis();
+    intent.putExtra("SOLICITUD_ID", solicitudId);
+
+    // Iniciar la Activity de Resumen y Pago
+    startActivity(intent);
+    }
+
+    // Manejar el botón de retroceso
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+    onBackPressed();
+    return true;
+    }
+    return super.onOptionsItemSelected(item);
+    }
+    }
