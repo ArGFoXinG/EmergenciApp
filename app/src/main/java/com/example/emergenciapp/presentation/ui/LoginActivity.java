@@ -9,13 +9,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+// 1. EL IMPORT AHORA USA MINÚSCULAS:
 import com.example.emergenciapp.data.model.usuario;
 import com.example.emergenciapp.databinding.ActivityLoginBinding;
 import com.example.emergenciapp.presentation.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // View Binding: Clase generada automáticamente para acceder a las vistas
     private ActivityLoginBinding binding;
     private LoginViewModel viewModel;
 
@@ -23,15 +23,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1. Inicializar View Binding (Reemplaza findViewById)
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 2. Inicializar ViewModel
-        // Usamos this.getLifecycleOwner() si usáramos Fragmentos
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        // 3. Manejo del Click en el Botón Entrar
         binding.btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,18 +35,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // 4. Observar el Resultado del Login
-        // Cuando el Repositorio (vía ViewModel) termina la simulación de login,
-        // este observador se activa.
+        // 2. LA REFERENCIA EN EL OBSERVER AHORA ES MINÚSCULA:
         viewModel.login(null, null).observe(this, new androidx.lifecycle.Observer<usuario>() {
             @Override
-            public void onChanged(usuario usuario) {
-                // NOTA: Para evitar que se ejecute la primera vez con null,
-                // hacemos la verificación solo después de intentar el login.
+            public void onChanged(usuario usuario) { // CLASE MINÚSCULA
 
-                // Si el usuario es nulo, significa que el login falló
                 if (usuario == null) {
-                    // Solo mostramos el error si ya se intentó un login
                     if (!binding.editUsername.getText().toString().isEmpty()) {
                         Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
                     }
@@ -70,16 +60,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Llamar al método login del ViewModel con las credenciales
         viewModel.login(username, password);
     }
 
-    private void handleSuccessfulLogin(usuario usuario) {
+    private void handleSuccessfulLogin(usuario usuario) { // CLASE MINÚSCULA
         Toast.makeText(this, "Bienvenido, " + usuario.getUsername() + ". Rol: " + usuario.getRole(), Toast.LENGTH_LONG).show();
 
-        // TODO: Aquí debes decidir a dónde navegar según el rol (Cliente o Profesional)
-        // Por ahora, solo cerramos la actividad.
-        // startActivity(new Intent(LoginActivity.this, SelectServiceActivity.class));
-        // finish();
+        // Lógica de Navegación implementada:
+        Intent intent = new Intent(LoginActivity.this, SeleccionActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

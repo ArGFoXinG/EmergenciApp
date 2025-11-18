@@ -4,35 +4,51 @@ package com.example.emergenciapp.presentation.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.emergenciapp.data.model.Pago;
-import com.example.emergenciapp.data.remote.PagoRepositoryImpl;
 
 public class PagoViewModel extends ViewModel {
-
-    private final PagoRepositoryImpl pagoRepository;
-    private final MutableLiveData<Boolean> _pagoExitoso = new MutableLiveData<>();
-    public LiveData<Boolean> pagoExitoso = _pagoExitoso;
 
     private final MutableLiveData<Pago> _resumenPago = new MutableLiveData<>();
     public LiveData<Pago> resumenPago = _resumenPago;
 
-    public PagoViewModel() {
-        this.pagoRepository = new PagoRepositoryImpl();
-    }
+    private final MutableLiveData<Boolean> _pagoConfirmado = new MutableLiveData<>();
+    public LiveData<Boolean> pagoConfirmado = _pagoConfirmado;
 
     /**
-     * Calcula el resumen de pago basándose en el servicio
+     * Realiza el cálculo del total basado en el costo base.
      */
-    public void calcularResumen(String solicitudId, double costoBase) {
-        Pago pago = new Pago(solicitudId, "Tarjeta de Crédito", costoBase, 0.0);
+    public void calcularResumen(double costoBase, String solicitudId) {
+        double ivaPorcentaje = 0.21;
+        double ivaMonto = costoBase * ivaPorcentaje;
+        double total = costoBase + ivaMonto;
+
+        // Crea el objeto Pago con la información calculada
+        Pago pago = new Pago(
+                solicitudId,
+                "Tarjeta", // Método por defecto
+                costoBase,
+                ivaPorcentaje,
+                ivaMonto,
+                total,
+                "PENDIENTE"
+        );
         _resumenPago.setValue(pago);
     }
 
     /**
-     * Procesa el pago del servicio
+     * Simula la confirmación del pago.
      */
-    public void procesarPago(Pago pago) {
-        boolean resultado = pagoRepository.procesarPago(pago);
-        _pagoExitoso.postValue(resultado);
+    public void confirmarPago(String metodo) {
+        // En una app real: Aquí llamarías a la pasarela de pagos (Mercado Pago/Stripe).
+
+        // --- SIMULACIÓN ---
+        if ("Tarjeta".equals(metodo)) {
+            // Simulación exitosa
+            _pagoConfirmado.postValue(true);
+        } else {
+            // Simulación pago en efectivo (se considera "confirmado" el servicio)
+            _pagoConfirmado.postValue(true);
+        }
     }
 }
