@@ -29,6 +29,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    // ✅ Bloque para activar View Binding (Correcto)
     buildFeatures {
         viewBinding = true
     }
@@ -36,8 +37,9 @@ android {
 
 dependencies {
 
+    // --- Dependencias base (ya existentes) ---
     implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.material) // Usamos esta para la base de Material 3
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
@@ -45,20 +47,17 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // --- Patrón MVVM (ViewModel y LiveData) ---
-    val lifecycle_version = "2.7.0"
+    // Eliminamos 'val lifecycle_version' ya que no se usa con libs.
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
 
-// --- Acceso a API (Retrofit y Gson) ---
-    val retrofit_version = "2.9.0"
+    // --- Acceso a API (Retrofit y Gson) ---
+    // Eliminamos 'val retrofit_version' ya que no se usa con libs.
     implementation(libs.retrofit)
-// Convertidor JSON a Objetos Java
     implementation(libs.converter.gson)
 
-// --- Material 3 (Requisito de diseño) ---
-    implementation(libs.material.v1110)
-
-    val maps_version = "18.1.0"
+    // --- Google Maps y Servicios de Localización (Requisito de Sensor) ---
+    // Eliminamos las variables de versión redundantes.
     implementation(libs.play.services.maps)
-    implementation(libs.play.services.location) // Para el sensor GPS
+    implementation(libs.play.services.location)
 }
