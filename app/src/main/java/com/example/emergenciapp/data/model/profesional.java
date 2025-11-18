@@ -1,6 +1,7 @@
+// Archivo: data/model/Profesional.java
 package com.example.emergenciapp.data.model;
 
-public class profesional {
+public class profesional { // ¡Clase con mayúscula!
     private String id;
     private String nombre;
     private String oficio;
@@ -10,7 +11,7 @@ public class profesional {
     private int tiempoEstimadoMin;
     private String perfilImageUrl;
 
-    // Constructor
+    // Constructor con mayúscula
     public profesional(String id, String nombre, String oficio, double calificacionPromedio, int cantidadOpiniones, double distanciaKm, int tiempoEstimadoMin, String perfilImageUrl) {
         this.id = id;
         this.nombre = nombre;
